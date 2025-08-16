@@ -70,9 +70,9 @@ blog_app-1.1/
 3. Run the SQL commands:
    
 --- Add admin column if not exists
-    ```sql
+```sql
  ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE;
-    ```
+```
     
 ---Create admin user (replace with your preferred credentials)
 ```sql
