@@ -44,20 +44,68 @@ include('includes/auth.php');
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-8">
-                <h2>Recent Posts</h2>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Recent Posts</h2>
+                    <form class="d-flex" action="index.php" method="GET">
+                        <input class="form-control me-2" type="search" name="search" placeholder="Search by title or content" aria-label="Search" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                        <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
                 <?php
                 try {
-                    $stmt = $pdo->query("SELECT posts.*, users.username FROM posts JOIN users ON posts.user_id = users.id ORDER BY created_at DESC");
+                    // Pagination settings
+                    $posts_per_page = 5;
+                    $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+                    $offset = ($page - 1) * $posts_per_page;
+
+                    // Search term
+                    $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+                    // Base query
+                    $sql = "SELECT posts.*, users.username FROM posts JOIN users ON posts.user_id = users.id";
+                    $count_sql = "SELECT COUNT(*) FROM posts JOIN users ON posts.user_id = users.id";
+
+                    // Apply search filter
+                    if (!empty($search)) {
+                        $sql .= " WHERE posts.title LIKE :search OR posts.content LIKE :search";
+                        $count_sql .= " WHERE posts.title LIKE :search OR posts.content LIKE :search";
+                    }
+
+                    // Order by
+                    $sql .= " ORDER BY created_at DESC";
+
+                    // Get total number of posts for pagination
+                    $count_stmt = $pdo->prepare($count_sql);
+                    if (!empty($search)) {
+                        $count_stmt->bindValue(':search', '%' . $search . '%');
+                    }
+                    $count_stmt->execute();
+                    $total_posts = $count_stmt->fetchColumn();
+                    $total_pages = ceil($total_posts / $posts_per_page);
+
+                    // Add limit for pagination
+                    $sql .= " LIMIT :limit OFFSET :offset";
+
+                    $stmt = $pdo->prepare($sql);
+
+                    if (!empty($search)) {
+                        $stmt->bindValue(':search', '%' . $search . '%');
+                    }
+
+                    $stmt->bindValue(':limit', $posts_per_page, PDO::PARAM_INT);
+                    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+                    $stmt->execute();
+
                     $posts = $stmt->fetchAll();
 
-                    if(count($posts) > 0):
-                        foreach($posts as $post): ?>
+                    if (count($posts) > 0):
+                        foreach ($posts as $post): ?>
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <h3 class="card-title"><?= htmlspecialchars($post['title']) ?></h3>
                                     <p class="card-text"><?= nl2br(htmlspecialchars(substr($post['content'], 0, 200))) ?>...</p>
                                     <p class="card-text"><small class="text-muted">Posted by <?= htmlspecialchars($post['username']) ?> on <?= date('F j, Y, g:i a', strtotime($post['created_at'])) ?></small></p>
-                                    <?php if(isLoggedIn() && isset($_SESSION['user_id']) && $_SESSION['user_id'] == $post['user_id']): ?>
+                                    <?php if (isLoggedIn() && isset($_SESSION['user_id']) && $_SESSION['user_id'] == $post['user_id']): ?>
                                         <a href="posts/edit.php?id=<?= $post['id'] ?>" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
                                         <a href="posts/delete.php?id=<?= $post['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i> Delete</a>
                                     <?php endif; ?>
@@ -65,12 +113,37 @@ include('includes/auth.php');
                             </div>
                         <?php endforeach;
                     else:
-                        echo "<p>No posts yet. Be the first to create one!</p>";
+                        echo "<p>No posts found.</p>";
                     endif;
-                } catch(PDOException $e) {
+
+                } catch (PDOException $e) {
                     echo "<div class=\"alert alert-danger\">Error loading posts: " . htmlspecialchars($e->getMessage()) . "</div>";
                 }
                 ?>
+
+                <?php if ($total_pages > 1): ?>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <?php if ($page > 1):
+                            $previous_page = $page - 1;
+                            $search_param = urlencode($search);
+                            echo "<li class=\"page-item\"><a class=\"page-link\" href=\" ?page=$previous_page&search=$search_param\">Previous</a></li>";
+                        endif; ?>
+
+                        <?php for ($i = 1; $i <= $total_pages; $i++):
+                            $active_class = ($i == $page) ? ' active' : '';
+                            $search_param = urlencode($search);
+                            echo "<li class=\"page-item$active_class\"><a class=\"page-link\" href=\" ?page=$i&search=$search_param\">$i</a></li>";
+                        endfor; ?>
+
+                        <?php if ($page < $total_pages):
+                            $next_page = $page + 1;
+                            $search_param = urlencode($search);
+                            echo "<li class=\"page-item\"><a class=\"page-link\" href=\" ?page=$next_page&search=$search_param\">Next</a></li>";
+                        endif; ?>
+                    </ul>
+                </nav>
+                <?php endif; ?>
             </div>
         </div>
     </div>
