@@ -1,4 +1,5 @@
 body {
+<<<<<<< HEAD
     background-color: #f8f9fa;
 }
 
@@ -34,3 +35,58 @@ body {
     background-color: #c82333;
     border-color: #bd2130;
 }
+=======
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.post {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.post h2 {
+    margin-top: 0;
+}
+
+form {
+    margin: 20px 0;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0 20px;
+    display: block;
+}
+
+button {
+    background: #333;
+    color: white;
+    border: 0;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.alert {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+
+.alert-error {
+    background: #ffdddd;
+    color: #ff0000;
+}
+
+.alert-success {
+    background: #ddffdd;
+    color: #008000;
+}
+>>>>>>> 599860d1e0550e0dadbb045dc55ec55b943bdacf

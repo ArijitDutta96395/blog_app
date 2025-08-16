@@ -4,6 +4,10 @@ include('../includes/auth.php');
 
 requireAuth();
 
+<<<<<<< HEAD
+=======
+// Get post data
+>>>>>>> 599860d1e0550e0dadbb045dc55ec55b943bdacf
 if(!isset($_GET['id'])) {
     $_SESSION['error'] = "Post ID is required";
     header("Location: ../index.php");
@@ -43,6 +47,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>Edit Post</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -70,10 +75,30 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         <?php if(isset($_SESSION['error'])): ?>
             <div class="alert alert-danger"><?= htmlspecialchars($_SESSION['error']) ?></div>
+=======
+    <title>Edit Post - Blog Application</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Edit Post</h1>
+        <nav>
+            <a href="../index.php">Home</a>
+            <a href="../users/logout.php">Logout</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Edit Your Post</h2>
+        
+        <?php if(isset($_SESSION['error'])): ?>
+            <div class="alert alert-error"><?= htmlspecialchars($_SESSION['error']) ?></div>
+>>>>>>> 599860d1e0550e0dadbb045dc55ec55b943bdacf
             <?php unset($_SESSION['error']); ?>
         <?php endif; ?>
         
         <form method="POST" action="edit.php?id=<?= htmlspecialchars($_GET['id']) ?>">
+<<<<<<< HEAD
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" class="form-control" id="title" name="title" value="<?= htmlspecialchars($post['title']) ?>" required>
@@ -94,3 +119,22 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+=======
+            <div>
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" value="<?= htmlspecialchars($post['title']) ?>" required>
+            </div>
+            
+            <div>
+                <label for="content">Content:</label>
+                <textarea id="content" name="content" rows="10" required><?= htmlspecialchars($post['content']) ?></textarea>
+            </div>
+            
+            <button type="submit">Update Post</button>
+        </form>
+        
+        <p><a href="../index.php">← Back to Home</a></p>
+    </main>
+</body>
+</html>
+>>>>>>> 599860d1e0550e0dadbb045dc55ec55b943bdacf

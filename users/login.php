@@ -5,12 +5,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
     
+<<<<<<< HEAD
+=======
+    // Validate input
+>>>>>>> 599860d1e0550e0dadbb045dc55ec55b943bdacf
     if(empty($username) || empty($password)) {
         $_SESSION['error'] = "Username and password are required";
         header("Location: login.php");
         exit;
     }
     
+<<<<<<< HEAD
+=======
+    // Check user credentials
+>>>>>>> 599860d1e0550e0dadbb045dc55ec55b943bdacf
     $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
     $stmt->execute([$username]);
     $user = $stmt->fetch();
@@ -34,6 +42,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -102,3 +111,48 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+=======
+    <title>Login - Blog Application</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Login</h1>
+        <nav>
+            <a href="../index.php">Home</a>
+            <a href="register.php">Register</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Login to Your Account</h2>
+        
+        <?php if(isset($_SESSION['error'])): ?>
+            <div class="alert alert-error"><?= htmlspecialchars($_SESSION['error']) ?></div>
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
+        
+        <?php if(isset($_SESSION['success'])): ?>
+            <div class="alert alert-success"><?= htmlspecialchars($_SESSION['success']) ?></div>
+            <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
+        
+        <form method="POST" action="login.php">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <button type="submit">Login</button>
+        </form>
+        
+        <p>Don't have an account? <a href="register.php">Register here</a></p>
+    </main>
+</body>
+</html>
+>>>>>>> 599860d1e0550e0dadbb045dc55ec55b943bdacf

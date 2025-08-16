@@ -9,12 +9,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $content = trim($_POST['content']);
     $user_id = $_SESSION['user_id'];
     
+<<<<<<< HEAD
+=======
+    // Validate input
+>>>>>>> 599860d1e0550e0dadbb045dc55ec55b943bdacf
     if(empty($title) || empty($content)) {
         $_SESSION['error'] = "Title and content are required";
         header("Location: create.php");
         exit;
     }
     
+<<<<<<< HEAD
+=======
+    // Insert post into database
+>>>>>>> 599860d1e0550e0dadbb045dc55ec55b943bdacf
     $stmt = $pdo->prepare("INSERT INTO posts (title, content, user_id) VALUES (?, ?, ?)");
     
     if($stmt->execute([$title, $content, $user_id])) {
@@ -33,6 +41,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>Create Post</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -60,10 +69,30 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         <?php if(isset($_SESSION['error'])): ?>
             <div class="alert alert-danger"><?= htmlspecialchars($_SESSION['error']) ?></div>
+=======
+    <title>Create Post - Blog Application</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Create New Post</h1>
+        <nav>
+            <a href="../index.php">Home</a>
+            <a href="logout.php">Logout</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Write Your Post</h2>
+        
+        <?php if(isset($_SESSION['error'])): ?>
+            <div class="alert alert-error"><?= htmlspecialchars($_SESSION['error']) ?></div>
+>>>>>>> 599860d1e0550e0dadbb045dc55ec55b943bdacf
             <?php unset($_SESSION['error']); ?>
         <?php endif; ?>
         
         <form method="POST" action="create.php">
+<<<<<<< HEAD
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" class="form-control" id="title" name="title" required>
@@ -84,3 +113,22 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+=======
+            <div>
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            
+            <div>
+                <label for="content">Content:</label>
+                <textarea id="content" name="content" rows="10" required></textarea>
+            </div>
+            
+            <button type="submit">Create Post</button>
+        </form>
+        
+        <p><a href="../index.php">← Back to Home</a></p>
+    </main>
+</body>
+</html>
+>>>>>>> 599860d1e0550e0dadbb045dc55ec55b943bdacf
