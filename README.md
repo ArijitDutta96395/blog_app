@@ -64,15 +64,22 @@ blog_app-1.1/
    ```
    Or manually create a database named `blog`
 
-### 2. Create Admin User
-1. Open phpMyAdmin
-2. Select the `blog` database
-3. Run the SQL commands from `create_admin_user.sql`:
-   ```sql
-   INSERT INTO users (username, email, password, is_admin) 
-   VALUES ('admin', 'admin@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 1);
+### 2. Create Admin User via phpMyAdmin
+1. Open phpMyAdmin at `http://localhost/phpmyadmin`
+2. Select the blog database
+3. Run the SQL commands: 
+  -- Add admin column if not exists
+     ```sql
+ ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE;
+```
+-- Create admin user (replace with your preferred credentials)
+```sql
+INSERT INTO users (username, email, password, is_admin) 
+VALUES ('admin', 'admin@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 1);
    ```
-
+3. Access Admin Dashboard
+1. Admin Login: `http://localhost/blog_app-1.1/admin/login.php`
+2. Admin Credentials: Use the credentials you set in phpMyAdmin
 
 ### 3. Access the Application
 - **Main Blog:** `http://localhost/blog_app-1.1/`
