@@ -94,7 +94,7 @@ $users = $stmt->fetchAll();
                         <tr>
                             <td><?= htmlspecialchars($user['id']) ?></td>
                             <td><?= htmlspecialchars($user['username']) ?></td>
-                            <td><?= htmlspecialchars($user['email']) ?></td>
+                            <td><?= htmlspecialchars($user['email'] ?? 'N/A') ?></td>
                             <td><?= $user['is_admin'] ? 'Admin' : 'User' ?></td>
                             <td><?= date('F j, Y, g:i a', strtotime($user['created_at'])) ?></td>
                             <td>

@@ -3,14 +3,23 @@ include('../includes/config.php');
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
     $password = trim($_POST['password']);
     
-    if(empty($username) || empty($password)) {
-        $_SESSION['error'] = "Username and password are required";
+    if(empty($username) || empty($email) || empty($password)) {
+        $_SESSION['error'] = "Username, email and password are required";
         header("Location: register.php");
         exit;
     }
     
+    // Validate email format
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['error'] = "Please enter a valid email address";
+        header("Location: register.php");
+        exit;
+    }
+    
+    // Check if username already exists
     $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
     $stmt->execute([$username]);
     
@@ -20,10 +29,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
     
+    // Check if email already exists
+    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    
+    if($stmt->rowCount() > 0) {
+        $_SESSION['error'] = "Email already registered";
+        header("Location: register.php");
+        exit;
+    }
+    
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     
-    $stmt = $pdo->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-    $stmt->execute([$username, $hashed_password]);
+    $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+    $stmt->execute([$username, $email, $hashed_password]);
     
     $_SESSION['success'] = "Registration successful. Please login.";
     header("Location: login.php");
@@ -76,6 +95,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
                                 <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
