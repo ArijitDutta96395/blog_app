@@ -9,6 +9,15 @@ A secure, feature-rich blog application built with PHP, MySQL, and Bootstrap 5.
 - **Create Blog Posts** - Rich text posting functionality
 - **Edit/Delete Posts** - Full CRUD operations for posts
 - **Responsive Design** - Mobile-friendly interface
+---
+
+## 📸 Application Screenshots  
+
+| Admin Dashboard | Login Page | Manage Users | Recent Posts |
+|-----------------|------------|--------------|--------------|
+| ![Admin Dashboard](https://github.com/ArijitDutta96395/blog_app/blob/main/Admin_Dashboard.png) | ![Login Page](https://github.com/ArijitDutta96395/blog_app/blob/main/Login_page.png) | ![Manage Users](https://github.com/ArijitDutta96395/blog_app/blob/main/Manage_Users.png) | ![Recent Posts](https://github.com/ArijitDutta96395/blog_app/blob/main/Recent_posts.png) |
+
+---
 
 ### Admin Features
 - **Secure Admin Dashboard** - Password-protected admin access
